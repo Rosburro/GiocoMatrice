@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱 Gatti nella Matrice</title>
+
+    <!-- DaisyUI + Tailwind CSS via CDN (nessun download necessario) -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- CSS personalizzato -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen bg-base-200 flex flex-col items-center justify-center p-4">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- INDICATORE DIFFICOLTÀ (piccolo, alto a destra)         -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="difficolta-badge" class="fixed top-3 right-3 badge badge-outline badge-sm hidden">
+        Livello: <span id="difficolta-valore" class="font-bold ml-1">-</span>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SCHERMATA INIZIALE: scelta difficoltà + livello iniziale -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="schermata-iniziale" class="card bg-base-100 shadow-xl w-full max-w-md">
+        <div class="card-body items-center text-center">
+            <h1 class="card-title text-2xl mb-2">🐱 Gatti nella Matrice</h1>
+            <p class="text-sm opacity-70 mb-4">
+                Un gatto per colore, uno per riga e colonna.<br>
+                I gatti non possono toccarsi (nemmeno in diagonale)!
+            </p>
+
+            <!-- Selezione difficoltà -->
+            <div class="form-control w-full max-w-xs mb-4">
+                <label class="label">
+                    <span class="label-text">Livello di difficoltà</span>
+                </label>
+                <select id="select-difficolta" class="select select-bordered w-full">
+                    <!-- Le opzioni vengono generate via JS (da 4 a 30) -->
+                </select>
+            </div>
+
+            <!-- Input livello già completato -->
+            <div id="box-livello-iniziale" class="form-control w-full max-w-xs mb-4">
+                <label class="label">
+                    <span class="label-text">A che livello eri arrivato?</span>
+                </label>
+                <input type="number" id="input-livello-iniziale" class="input input-bordered w-full"
+                       min="0" max="30" placeholder="0" value="0">
+                <label class="label">
+                    <span class="label-text-alt">Inserisci 0 se è la tua prima partita</span>
+                </label>
+            </div>
+
+            <!-- Pulsante inizio -->
+            <button id="btn-inizia" class="btn btn-primary btn-wide mt-2">
+                Inizia a giocare 🎮
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SCHERMATA DI GIOCO                                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="schermata-gioco" class="hidden flex-col items-center w-full">
+
+        <!-- Barra info -->
+        <div class="flex items-center gap-4 mb-4 flex-wrap justify-center">
+            <div class="stat place-items-center p-2">
+                <div class="stat-title text-xs">Livello</div>
+                <div class="stat-value text-lg" id="info-livello">1</div>
+            </div>
+            <div class="stat place-items-center p-2">
+                <div class="stat-title text-xs">Griglia</div>
+                <div class="stat-value text-lg" id="info-griglia">-</div>
+            </div>
+            <div class="stat place-items-center p-2">
+                <div class="stat-title text-xs">Colori</div>
+                <div class="stat-value text-lg" id="info-colori">-</div>
+            </div>
+        </div>
+
+        <!-- Tabella di gioco -->
+        <div class="overflow-x-auto">
+            <table id="matriceGioco" class="border-collapse mx-auto">
+                <!-- Le celle vengono generate via JS -->
+            </table>
+        </div>
+
+        <!-- Pulsanti azione -->
+        <div class="flex gap-3 mt-5 flex-wrap justify-center">
+            <button id="btn-verifica" class="btn btn-success btn-sm">
+                ✓ Verifica soluzione
+            </button>
+            <button id="btn-pulisci" class="btn btn-warning btn-sm">
+                ✗ Pulisci tutto
+            </button>
+            <button id="btn-suggerimento" class="btn btn-info btn-sm">
+                💡 Suggerimento
+            </button>
+            <button id="btn-nuova" class="btn btn-ghost btn-sm">
+                🔄 Nuova griglia
+            </button>
+        </div>
+
+        <!-- Messaggio risultato -->
+        <div id="messaggio" class="alert mt-4 hidden w-full max-w-md">
+            <span id="messaggio-testo"></span>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- MODALE VITTORIA                                         -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <dialog id="modale-vittoria" class="modal">
+        <div class="modal-box text-center">
+            <h3 class="font-bold text-xl mb-2">🎉 Complimenti!</h3>
+            <p class="py-4">Hai completato il livello con successo!</p>
+            <div class="modal-action justify-center">
+                <button id="btn-prossimo-livello" class="btn btn-primary">
+                    Prossimo livello ➜
+                </button>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+    <!-- JavaScript -->
+    <script src="game.js"></script>
+</body>
+</html>
